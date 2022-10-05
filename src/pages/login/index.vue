@@ -39,8 +39,8 @@
               </div>
               <div class="text-center">
                 <button
-                  @click="loginSubmit"
                   class="btn btn-primary btn-block enter-btn"
+                  @click="loginSubmit"
                 >
                   Login
                 </button>
@@ -84,17 +84,12 @@ export default {
   mounted() {},
   destroyed() {},
   methods: {
-    loginSubmit() {
-      this.$axios
-        .post('/account/login', {
-          userId: this.userId,
-          userPassword: this.userPassword,
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            console.log(res)
-          }
-        })
+    async loginSubmit() {
+      const result = await this.$axios.post('/account/login', {
+        userId: this.userId,
+        userPassword: this.userPassword,
+      })
+      console.log('result', result)
     },
   },
 }

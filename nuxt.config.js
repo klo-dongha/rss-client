@@ -1,5 +1,5 @@
 // env별 config 파일 설정
-const defaultConfig = require('./src/config/default.json')
+import defaultConfig from './src/config/default.json'
 let env = 'development'
 switch (process.env.NODE_ENV) {
   case 'production':
@@ -14,8 +14,6 @@ let config = null
 try {
   const envConfig = require(''.concat('./src/config/', env.trim(), '.json'))
   config = Object.assign({}, defaultConfig, envConfig)
-
-  console.log(config)
 } catch (e) {
   config = defaultConfig
 }
@@ -42,7 +40,7 @@ export default {
   },
 
   env: {
-    config: config,
+    config,
     DEV_ENV: process.env.DEV_ENV,
   },
 
@@ -55,7 +53,7 @@ export default {
   css: ['~/assets/css/style.css'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [{src: '~/plugins/axios.js'}],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -80,7 +78,16 @@ export default {
     init(axios) {
       axios.defaults.withCredentials = true
     },
-    debug: false,
+    debug: true,
+    progress: true,
+    retry: {
+      retries: 3, // 최대 재전송 횟수 3회
+      shouldResetTimeout: true, // 재전송 간 타임아웃을 리셋하기
+      retryDelay: (retry) => {
+        return retry * 100 // 재전송 횟수 * 0.1초만큼 재전송 시작 시간을 지연시키기
+      },
+      retryCondition: (err) => err.response.status === 429, // 서버 혼잡이 일어났을 경우에만 재전송하기
+    },
   },
 
   router: {
@@ -93,12 +100,11 @@ export default {
     terser: {
       terserOptions: {
         compress: {
-          drop_console:
+          drop_console: !(
             process.env.NODE_ENV === 'development' ||
             process.env.NODE_ENV === 'test' ||
             process.env.DEV_ENV === 'test'
-              ? false
-              : true,
+          ),
         },
       },
     },
