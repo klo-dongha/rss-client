@@ -85,11 +85,10 @@ export default {
   destroyed() {},
   methods: {
     async loginSubmit() {
-      const result = await this.$axios.post('/account/login', {
+      await this.$axios.post('/account/login', {
         userId: this.userId,
         userPassword: this.userPassword,
       })
-      console.log('result', result)
     },
   },
 }

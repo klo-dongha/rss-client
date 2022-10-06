@@ -75,9 +75,7 @@ export default {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     baseURL: `${config.appSettings.apiUrlForSSR}`,
     browserBaseURL: `${config.appSettings.apiUrl}`,
-    init(axios) {
-      axios.defaults.withCredentials = true
-    },
+    withCredentials: true,
     debug: true,
     progress: true,
     retry: {

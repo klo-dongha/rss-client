@@ -1,7 +1,7 @@
 {
   "appSettings": {
-    "apiUrl": "http://127.0.0.1:3000/api",
-    "apiUrlForSSR": "http://127.0.0.1:3000/api"
+    "apiUrl": "http://local.rss.co.kr:3000/api",
+    "apiUrlForSSR": "http://local.rss.co.kr:3000/api"
   },
   "devtools": true,
   "silent": false

@@ -3,6 +3,13 @@ export default ({$axios, error: ctxError}) => {
     console.log('Making request to ' + config.url) // 요청 때마다 url 출력
   })
 
+  $axios.onResponse((response) => {
+    console.log('response', response)
+
+    const setCookies = response.headers['set-cookie']
+    console.log('setCookies', setCookies)
+  })
+
   $axios.onError((error) => {
     const code = parseInt(error.response && error.response.status)
 
